@@ -1,0 +1,26 @@
+opencollection: 1.0.0
+
+info:
+  name: ynov-test
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MTg0MTc2OH0.Ak8lw4z4yaVDFfBfg241pG4ezWEUYoUejeu2DkblEik
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

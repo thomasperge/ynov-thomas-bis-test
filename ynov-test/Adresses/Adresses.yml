@@ -1,0 +1,23 @@
+info:
+  name: Adresses
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://localhost:3000/api/addresses
+  body:
+    type: json
+    data: |-
+      {
+        "searchWord": "Lyon",
+        "name": "Lyon",
+        "description": "Lyon"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
