@@ -9,4 +9,12 @@ module.exports = {
     ...tsJestTransformCfg,
   },
   testMatch: ["**/tests/**/*.spec.ts", "**/src/**/*.spec.ts"],
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  coverageReporters: ["text", "lcov", "html"],
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!src/**/*.spec.ts",
+    "!src/index.ts",
+  ],
 };

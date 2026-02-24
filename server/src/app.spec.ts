@@ -44,6 +44,11 @@ describe("POST /api/users", () => {
 
     expect(response.status).toBe(400);
   });
+
+  it("retourne 400 pour credentials vides", async () => {
+    const res = await request(app).post("/api/users").send({});
+    expect(res.status).toBe(400);
+  });
 });
 
 // --- Exercice 3 : scénario testing ---
@@ -75,5 +80,31 @@ describe("Scénario utilisateur complet", () => {
     const response = await request(app).get("/api/users/me");
 
     expect(response.status).toBe(403);
+  });
+
+  it("retourne 403 avec un token invalide", async () => {
+    const response = await request(app)
+      .get("/api/users/me")
+      .set("Authorization", "Bearer invalid-token");
+
+    expect(response.status).toBe(403);
+  });
+
+  it("retourne 400 sur POST /api/users/tokens avec mauvais identifiants", async () => {
+    const response = await request(app)
+      .post("/api/users/tokens")
+      .send({ email: "wrong@test.com", password: "wrong" });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBeDefined();
+  });
+
+  it("GET /api/addresses retourne la liste (vide) pour l'utilisateur connecté", async () => {
+    const response = await request(app)
+      .get("/api/addresses")
+      .set("Authorization", `Bearer ${ctx.token}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.items).toEqual([]);
   });
 });
