@@ -1,1 +1,4 @@
+# Ensure npm is in PATH (e.g. when Git runs from Cursor/VS Code)
+export PATH="/usr/local/bin:/opt/homebrew/bin:$HOME/.nvm/versions/node/current/bin:$HOME/.local/share/fnm/current/bin:$PATH"
+[ -f "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
 npm test
