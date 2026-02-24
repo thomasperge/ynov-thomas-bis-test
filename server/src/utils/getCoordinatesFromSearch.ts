@@ -9,7 +9,8 @@ export async function getCoordinatesFromSearch(
     );
     if (Array.isArray(data?.features)) {
       const bestEntry = data.features.find(
-        (entry) => entry.geometry?.coordinates?.length === 2,
+        (entry: { geometry?: { coordinates?: number[] } }) =>
+          entry.geometry?.coordinates?.length === 2,
       );
       if (bestEntry) {
         return {

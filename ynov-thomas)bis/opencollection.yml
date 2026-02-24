@@ -1,0 +1,26 @@
+opencollection: 1.0.0
+
+info:
+  name: ynov-thomas-bis
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MTk0MzY1NH0.OlK6uPFEU-SE7Oc9mp_b_8JMygd48x8o_OlW2r7zHPg
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

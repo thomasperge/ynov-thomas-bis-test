@@ -8,7 +8,7 @@ export async function getUserFromRequest(req: Request): Promise<User | null> {
   let token: null | string = null;
   const authorization = req.headers["authorization"];
   if (authorization && authorization.startsWith("Bearer ")) {
-    token = authorization.split(" ").pop();
+    token = authorization.split(" ").pop() ?? null;
   } else if (req.cookies?.["token"]) {
     token = req.cookies["token"];
   }
@@ -20,10 +20,9 @@ export async function getUserFromRequest(req: Request): Promise<User | null> {
         const user = await User.findOneBy({ id: payload.userId });
         if (user) {
           return user;
-        } else {
-          return null;
         }
       }
+      return null;
     } catch {
       return null;
     }

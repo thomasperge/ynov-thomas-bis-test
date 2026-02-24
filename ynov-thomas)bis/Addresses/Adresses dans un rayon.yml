@@ -1,0 +1,25 @@
+info:
+  name: Adresses dans un rayon
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:3000/api/addresses/searches
+  body:
+    type: json
+    data: |-
+      {
+        "radius": 1000,
+        "from": {
+          "lat": 45.764,
+          "lng": 4.8357
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

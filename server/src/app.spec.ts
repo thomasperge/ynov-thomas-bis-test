@@ -9,7 +9,7 @@ import path from "path";
 const ctx: Record<string, any> = {};
 
 beforeAll(async () => {
-  const dbPath = path.join(__dirname, "..", "db.sqlite");
+  const dbPath = path.join(__dirname, "..", "data", "db.sqlite");
   if (fs.existsSync(dbPath)) fs.unlinkSync(dbPath);
   await datasource.initialize();
 });

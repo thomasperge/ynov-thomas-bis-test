@@ -22,6 +22,7 @@ addressesRouter.post("/", isAuthorized, async (req, res) => {
 
   if (coordinates) {
     const user = await getUserFromRequest(req);
+    if (!user) return res.status(403).json({ message: `access denied` });
     const address = new Address();
     address.name = name;
     address.description = description;
@@ -36,6 +37,7 @@ addressesRouter.post("/", isAuthorized, async (req, res) => {
 
 addressesRouter.get("/", isAuthorized, async (req, res) => {
   const user = await getUserFromRequest(req);
+  if (!user) return res.status(403).json({ message: `access denied` });
   const addresses = await Address.findBy({ user: { id: user.id } });
   return res.json({ items: addresses });
 });
@@ -64,6 +66,7 @@ addressesRouter.post("/searches", isAuthorized, async (req, res) => {
   }
 
   const user = await getUserFromRequest(req);
+  if (!user) return res.status(403).json({ message: `access denied` });
   const addresses = await Address.findBy({ user: { id: user.id } });
   const closeAddresses = [];
 
