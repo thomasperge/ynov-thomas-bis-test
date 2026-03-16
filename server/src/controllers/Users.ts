@@ -34,6 +34,18 @@ usersRouter.get("/me", isAuthorized, async (req, res) => {
   return res.json({ item: user });
 });
 
+usersRouter.delete("/me", isAuthorized, async (req, res) => {
+  const user = await getUserFromRequest(req);
+  if (!user) return res.status(403).json({ message: "access denied" });
+
+  try {
+    await User.remove(user);
+    return res.json({ message: "account deleted" });
+  } catch (e) {
+    return res.status(500).json({ message: "unable to delete account" });
+  }
+});
+
 usersRouter.post("/tokens", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
