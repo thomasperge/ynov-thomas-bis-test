@@ -9,12 +9,23 @@ const tokenSecretKey = process.env.SESSION_SECRET || "superlongstring";
 
 const usersRouter = Router();
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 usersRouter.post("/", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
   if (!email || !password) {
     return res.status(400).json({ message: `email and password are required` });
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    return res.status(400).json({ message: `a valid email is required` });
+  }
+
+  const existingUser = await User.findOneBy({ email });
+  if (existingUser) {
+    return res.status(409).json({ message: `email already taken` });
   }
 
   try {
