@@ -1,0 +1,27 @@
+info:
+  name: Connexion après changement mdp
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: http://localhost:3000/api/users/tokens
+  body:
+    type: json
+    data: |-
+      {
+        "email": "test@test.com",
+        "password": "newpassword123"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+tests:
+  assert:
+    - status: 200
+    - body.token: isString

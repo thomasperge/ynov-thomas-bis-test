@@ -1,0 +1,26 @@
+info:
+  name: Changer le mot de passe - champs manquants
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: http://localhost:3000/api/users/password
+  body:
+    type: json
+    data: |-
+      {
+        "newPassword": "newpassword123"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+tests:
+  assert:
+    - status: 400
+    - body.message: contains "required"

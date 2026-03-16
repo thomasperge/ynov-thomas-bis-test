@@ -1,0 +1,27 @@
+info:
+  name: Changer le mot de passe - sans token
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: http://localhost:3000/api/users/password
+  body:
+    type: json
+    data: |-
+      {
+        "currentPassword": "supersecret",
+        "newPassword": "newpassword123"
+      }
+  auth: none
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+tests:
+  assert:
+    - status: 403
+    - body.message: contains "access denied"
