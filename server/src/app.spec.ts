@@ -54,6 +54,56 @@ describe("POST /api/users", () => {
   });
 });
 
+// --- TDD Bug fix : email déjà pris et email invalide ---
+
+describe("POST /api/users - validation email (TDD bug fix)", () => {
+  it("retourne 409 si l'email est déjà utilisé par un autre compte", async () => {
+    const res = await request(app)
+      .post("/api/users")
+      .send({ email: ctx.email, password: "anotherpassword123" });
+
+    expect(res.status).toBe(409);
+    expect(res.body.message).toMatch(/already/i);
+  });
+
+  it("retourne 400 si l'email n'est pas un format valide (sans @)", async () => {
+    const res = await request(app)
+      .post("/api/users")
+      .send({ email: "notanemail", password: "password123" });
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/valid email/i);
+  });
+
+  it("retourne 400 si l'email n'a pas de domaine valide", async () => {
+    const res = await request(app)
+      .post("/api/users")
+      .send({ email: "user@", password: "password123" });
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/valid email/i);
+  });
+
+  it("retourne 400 si l'email n'a pas de partie locale", async () => {
+    const res = await request(app)
+      .post("/api/users")
+      .send({ email: "@domain.com", password: "password123" });
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch(/valid email/i);
+  });
+
+  it("accepte un email valide unique", async () => {
+    const uniqueEmail = faker.internet.email();
+    const res = await request(app)
+      .post("/api/users")
+      .send({ email: uniqueEmail, password: "password123" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.item.email).toBe(uniqueEmail);
+  });
+});
+
 // --- Exercice 3 : scénario testing ---
 
 describe("Scénario utilisateur complet", () => {
