@@ -234,6 +234,59 @@ describe("POST /api/addresses/searches", () => {
   });
 });
 
+// --- Exercice TDD : suppression de compte (DELETE /api/users/me) ---
+
+describe("DELETE /api/users/me (TDD - tests écrits avant l'implémentation)", () => {
+  let deleteEmail: string;
+  let deletePassword: string;
+  let deleteToken: string;
+
+  beforeAll(async () => {
+    deleteEmail = faker.internet.email();
+    deletePassword = faker.internet.password({ length: 12 });
+
+    await request(app)
+      .post("/api/users")
+      .send({ email: deleteEmail, password: deletePassword });
+
+    const loginRes = await request(app)
+      .post("/api/users/tokens")
+      .send({ email: deleteEmail, password: deletePassword });
+
+    deleteToken = loginRes.body.token;
+  });
+
+  it("retourne 403 sans token d'authentification", async () => {
+    const res = await request(app).delete("/api/users/me");
+    expect(res.status).toBe(403);
+  });
+
+  it("supprime le compte de l'utilisateur connecté et retourne 200", async () => {
+    const res = await request(app)
+      .delete("/api/users/me")
+      .set("Authorization", `Bearer ${deleteToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toMatch(/deleted/i);
+  });
+
+  it("l'utilisateur supprimé ne peut plus se connecter", async () => {
+    const res = await request(app)
+      .post("/api/users/tokens")
+      .send({ email: deleteEmail, password: deletePassword });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("l'utilisateur supprimé ne peut plus accéder à son profil", async () => {
+    const res = await request(app)
+      .get("/api/users/me")
+      .set("Authorization", `Bearer ${deleteToken}`);
+
+    expect(res.status).toBe(403);
+  });
+});
+
 // --- Route non gérée → 404 ---
 
 describe("404", () => {
